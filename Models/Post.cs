@@ -12,5 +12,7 @@ namespace Reddit.Models
         public ICollection<Comment> Comments { get; set; } = new List<Comment>();
         public int  Upvotes { get; set; } = 0;
         public int Downvotes { get; set; } = 0;
+        public DateTime CreateAt { get; set; } = DateTime.UtcNow;
+        public DateTime? UpdatedAt { get; set; } = null;
     }
 }
