@@ -2,6 +2,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Reddit;
 using Reddit.Mapper;
+using Reddit.Middlewares;
+using Reddit.Filters;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -28,6 +30,7 @@ builder.Services.AddCors(options =>
                                  .AllowAnyHeader());
 });
 builder.Services.AddSingleton<IMapper, Mapper>();
+builder.Services.AddControllers(options => options.Filters.Add<ModelValidationActionFilter>());
 
 
 var app = builder.Build();
@@ -39,6 +42,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.UseHttpsRedirection();
 app.UseCors();
 app.UseAuthorization();
